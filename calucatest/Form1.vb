@@ -24,11 +24,14 @@
     End Sub
 
     ' 数字入力
+    Private Const MaxDigits As Integer = 9
+
     Private Sub NumberButton_Click(sender As Object, e As EventArgs)
         Dim btn As Button = CType(sender, Button)
+        Dim digit As String = btn.Text
 
         If resultDisplayed Then
-            ' 結果表示後に入力されたらリセット
+            ' 計算結果後はリセット
             input1 = ""
             input2 = ""
             operation = ""
@@ -41,13 +44,34 @@
         End If
 
         If isSecondInput Then
-            input2 &= btn.Text
+            ' 9桁制限
+            If input2.Length >= MaxDigits Then Return
+
+            ' 先頭0処理
+            If input2 = "0" Then
+                input2 = digit
+            ElseIf input2 = "" And digit = "0" Then
+                input2 = "0"
+            Else
+                input2 &= digit
+            End If
+
             Label2.Text = input2
         Else
-            input1 &= btn.Text
+            If input1.Length >= MaxDigits Then Return
+
+            If input1 = "0" Then
+                input1 = digit
+            ElseIf input1 = "" And digit = "0" Then
+                input1 = "0"
+            Else
+                input1 &= digit
+            End If
+
             Label1.Text = input1
         End If
     End Sub
+
 
     ' ＋ボタン処理
     Private Sub PlusButton_Click(sender As Object, e As EventArgs)
