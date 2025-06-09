@@ -30,4 +30,12 @@ C1FlexGrid1.Cols.DefaultSize = 100  ' 列の幅（必要に応じて）
 ' 自動調整（内容に合わせて列幅変更したい場合）
 C1FlexGrid1.AutoSizeCols()
 
+
+' スタイルを定義（なければ新規作成）
+Dim cellStyle As C1.Win.C1FlexGrid.CellStyle = C1FlexGrid1.Styles.Add("CustomCellStyle")
+cellStyle.BackColor = Color.Yellow
+
+' 行3、列0 のセルに適用（固定列内のセル）
+C1FlexGrid1.SetCellStyle(3, 0, cellStyle)
+
 ```
