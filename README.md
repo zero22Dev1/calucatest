@@ -8,6 +8,11 @@ For col As Integer = 0 To C1FlexGrid1.Cols.Count - 1
     C1FlexGrid1.SetCellStyle(2, col, CreateBoldStyle(C1FlexGrid1, 16)) ' 2行目
 Next
 
+' TabTip.exe を起動（起動していなければ）
+If Process.GetProcessesByName("TabTip").Length = 0 Then
+    Process.Start("C:\Program Files\Common Files\Microsoft Shared\ink\TabTip.exe")
+End If
+
 ```
 
 ```vbnet
