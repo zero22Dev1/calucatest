@@ -3,44 +3,49 @@
 
 
 ```vbnet
+子画面
+Public Class ChildForm
+    ' 親に返却するデータ用プロパティ
+    Public Property ReturnedData As String
 
-For col As Integer = 0 To C1FlexGrid1.Cols.Count - 1
-    C1FlexGrid1.SetCellStyle(2, col, CreateBoldStyle(C1FlexGrid1, 16)) ' 2行目
-Next
+    Private Sub btnSendToParent_Click(sender As Object, e As EventArgs) _
+            Handles btnSendToParent.Click
+        ' テキストボックスの値などをプロパティにセット
+        Me.ReturnedData = txtInput.Text
+        ' OK を返してモーダルを閉じる
+        Me.DialogResult = DialogResult.OK
+        Me.Close()
+    End Sub
 
-' TabTip.exe を起動（起動していなければ）
-If Process.GetProcessesByName("TabTip").Length = 0 Then
-    Process.Start("C:\Program Files\Common Files\Microsoft Shared\ink\TabTip.exe")
-End If
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) _
+            Handles btnCancel.Click
+        Me.DialogResult = DialogResult.Cancel
+        Me.Close()
+    End Sub
+End Class
 
 ```
 
 ```vbnet
+親画面
+Public Class MainForm
+    Private Sub Button1_DoubleClick(sender As Object, e As EventArgs) _
+            Handles Button1.DoubleClick
+        ' 子画面を生成
+        Using f As New ChildForm()
+            ' モーダル表示
+            If f.ShowDialog() = DialogResult.OK Then
+                ' 子画面から返されたデータを受け取る
+                Dim received As String = f.ReturnedData
+                MessageBox.Show("子画面から受信: " & received)
+                ' ここで親画面のコントロールに反映するなど
+                lblResult.Text = received
+            Else
+                ' キャンセル時の処理（あれば）
+            End If
+        End Using
+    End Sub
+End Class
 
-' たとえば、フォームのロード時などに設定
-Dim bigFont As New Font("Meiryo", 14, FontStyle.Bold)
-
-
-'全体的に
-' 本体（セル）のフォントを設定
-C1FlexGrid1.Font = bigFont
-
-' ヘッダー（固定行・固定列）のフォントも明示的に設定
-C1FlexGrid1.Styles.Fixed.Font = bigFont
-
-' 行ヘッダーの高さや列幅も必要に応じて調整
-C1FlexGrid1.Rows.DefaultSize = 30   ' 行の高さ
-C1FlexGrid1.Cols.DefaultSize = 100  ' 列の幅（必要に応じて）
-
-' 自動調整（内容に合わせて列幅変更したい場合）
-C1FlexGrid1.AutoSizeCols()
-
-
-' スタイルを定義（なければ新規作成）
-Dim cellStyle As C1.Win.C1FlexGrid.CellStyle = C1FlexGrid1.Styles.Add("CustomCellStyle")
-cellStyle.BackColor = Color.Yellow
-
-' 行3、列0 のセルに適用（固定列内のセル）
-C1FlexGrid1.SetCellStyle(3, 0, cellStyle)
 
 ```
