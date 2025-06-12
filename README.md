@@ -3,27 +3,23 @@
 
 
 ```vbnet
-子画面
-Public Class ChildForm
-    ' 親に返却するデータ用プロパティ
-    Public Property ReturnedData As String
+' 演算子ボタンクリック時の処理
+Private Sub OperatorButton_Click(sender As Object, e As EventArgs)
+    Dim btn As Button = CType(sender, Button)
+    Dim operatorText As String = btn.Text
+    Dim currentText As String = TextBoxDisplay.Text
 
-    Private Sub btnSendToParent_Click(sender As Object, e As EventArgs) _
-            Handles btnSendToParent.Click
-        ' テキストボックスの値などをプロパティにセット
-        Me.ReturnedData = txtInput.Text
-        ' OK を返してモーダルを閉じる
-        Me.DialogResult = DialogResult.OK
-        Me.Close()
-    End Sub
+    If currentText.Length > 0 Then
+        Dim lastChar As Char = currentText(currentText.Length - 1)
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) _
-            Handles btnCancel.Click
-        Me.DialogResult = DialogResult.Cancel
-        Me.Close()
-    End Sub
-End Class
-
+        ' 最後の文字が演算子だったら置き換える
+        If "+-*/".Contains(lastChar) Then
+            TextBoxDisplay.Text = currentText.Substring(0, currentText.Length - 1) & operatorText
+        Else
+            TextBoxDisplay.Text &= operatorText
+        End If
+    End If
+End Sub
 ```
 
 ```vbnet
