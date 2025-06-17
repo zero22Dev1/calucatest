@@ -34,6 +34,7 @@ Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 End Sub
 ```
 
+```vb.net
 ' 処理対象列の「Name」をリストで定義
 Dim targetColNames As String() = {"金額", "調整額", "割引額"}
 
@@ -64,3 +65,4 @@ For row As Integer = C1FlexGrid1.Rows.Fixed To C1FlexGrid1.Rows.Count - 1
         End If
     Next
 Next
+```
