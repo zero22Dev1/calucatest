@@ -33,3 +33,34 @@ Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     Next
 End Sub
 ```
+
+' 処理対象列の「Name」をリストで定義
+Dim targetColNames As String() = {"金額", "調整額", "割引額"}
+
+' 赤文字スタイル（なければ作成）
+Dim redTextStyle = C1FlexGrid1.Styles("NegativeValueTextStyle")
+If redTextStyle Is Nothing Then
+    redTextStyle = C1FlexGrid1.Styles.Add("NegativeValueTextStyle")
+    redTextStyle.ForeColor = Color.Red
+End If
+
+' 全列を確認し、Nameが一致する列インデックスを収集
+Dim targetColIndices As New List(Of Integer)
+For col As Integer = C1FlexGrid1.Cols.Fixed To C1FlexGrid1.Cols.Count - 1
+    If targetColNames.Contains(C1FlexGrid1.Cols(col).Name) Then
+        targetColIndices.Add(col)
+    End If
+Next
+
+' データ行ごとに処理
+For row As Integer = C1FlexGrid1.Rows.Fixed To C1FlexGrid1.Rows.Count - 1
+    For Each col In targetColIndices
+        Dim value As Double
+        If Double.TryParse(C1FlexGrid1(row, col).ToString(), value) Then
+            If value < 0 Then
+                C1FlexGrid1(row, col) = Math.Abs(value)
+                C1FlexGrid1.SetCellStyle(row, col, redTextStyle)
+            End If
+        End If
+    Next
+Next
