@@ -1,4 +1,21 @@
 ```vbnet
+Private Function GetColumnTotal(columnName As String) As Decimal
+    Dim total As Decimal = 0
+    Dim colIndex As Integer = C1FlexGrid1.Cols(columnName).Index
+
+    For row As Integer = C1FlexGrid1.Rows.Fixed To C1FlexGrid1.Rows.Count - 1
+        Dim cellValue = C1FlexGrid1(row, colIndex)
+        If Not IsDBNull(cellValue) AndAlso IsNumeric(cellValue) Then
+            total += Convert.ToDecimal(cellValue)
+        End If
+    Next
+
+    Return total
+End Function
+```
+
+
+```vbnet
 For row As Integer = C1FlexGrid1.Rows.Fixed To C1FlexGrid1.Rows.Count - 1
     If C1FlexGrid1(row, "状態").ToString() = "完了" Then
         C1FlexGrid1.SetCellStyle(row, C1FlexGrid1.Cols("チェック").Index, C1FlexGrid1.Styles("Locked"))
