@@ -1,4 +1,38 @@
 ```vbnet
+Private Sub SelectRowByRecnoOrTop(recno As String)
+    Dim dataStartRow As Integer = C1FlexGrid1.Rows.Fixed ' 通常2行のヘッダー想定
+    Dim targetRowIndex As Integer = -1
+
+    If recno = "0" Then
+        targetRowIndex = dataStartRow
+    Else
+        Dim colRecno As Integer = C1FlexGrid1.Cols("recno").Index
+
+        ' データ行から検索
+        For row As Integer = dataStartRow To C1FlexGrid1.Rows.Count - 1
+            If C1FlexGrid1(row, colRecno).ToString() = recno Then
+                targetRowIndex = row
+                Exit For
+            End If
+        Next
+
+        ' 見つからなければ先頭データ行を選択
+        If targetRowIndex = -1 Then
+            targetRowIndex = dataStartRow
+        End If
+    End If
+
+    ' 対象行を選択
+    If targetRowIndex < C1FlexGrid1.Rows.Count Then
+        C1FlexGrid1.Select(targetRowIndex, 0)
+        C1FlexGrid1.Row = targetRowIndex
+    End If
+End Sub
+```
+
+
+
+```vbnet
 Private Function GetColumnTotal(columnName As String) As Decimal
     Dim total As Decimal = 0
     Dim colIndex As Integer = C1FlexGrid1.Cols(columnName).Index
