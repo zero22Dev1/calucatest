@@ -1,4 +1,15 @@
 ```vbnet
+For row As Integer = C1FlexGrid1.Rows.Fixed To C1FlexGrid1.Rows.Count - 1
+    If C1FlexGrid1(row, "状態").ToString() = "完了" Then
+        C1FlexGrid1.SetCellStyle(row, C1FlexGrid1.Cols("チェック").Index, C1FlexGrid1.Styles("Locked"))
+        C1FlexGrid1(row, C1FlexGrid1.Cols("チェック").Index, True) = False ' 編集不可
+    End If
+Next
+```
+
+
+
+```vbnet
 ' 例：フォームのLoadイベントなどで実行
 Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     ' サンプルデータの追加
