@@ -1,4 +1,26 @@
 ```vbnet
+' ロック用スタイルの作成（最初に一度だけ）
+If C1FlexGrid1.Styles("Locked") Is Nothing Then
+    Dim lockStyle = C1FlexGrid1.Styles.Add("Locked")
+    lockStyle.Locked = True
+    lockStyle.BackColor = Color.LightGray ' 見た目でロックを表現したい場合
+End If
+
+' チェックボックス列のインデックスを取得
+Dim chkCol As Integer = C1FlexGrid1.Cols("チェック").Index
+
+' 条件に応じてロック
+For row As Integer = C1FlexGrid1.Rows.Fixed To C1FlexGrid1.Rows.Count - 1
+    ' 例：「状態」列が「完了」の場合にチェックボックスをロック
+    If C1FlexGrid1(row, "状態").ToString() = "完了" Then
+        C1FlexGrid1(row, chkCol) = C1FlexGrid1(row, chkCol) ' 値そのまま
+        C1FlexGrid1.SetCellStyle(row, chkCol, C1FlexGrid1.Styles("Locked"))
+    End If
+Next
+```
+
+
+```vbnet
 Private Sub SelectRowByRecnoOrTop(recno As String)
     Dim dataStartRow As Integer = C1FlexGrid1.Rows.Fixed ' 通常2行のヘッダー想定
     Dim targetRowIndex As Integer = -1
