@@ -1,4 +1,22 @@
 ```vbnet
+Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    ' 画面の中央位置を取得
+    Dim screenBounds As Rectangle = Screen.PrimaryScreen.WorkingArea
+    Dim centerX As Integer = (screenBounds.Width - Me.Width) \ 2
+    Dim centerY As Integer = (screenBounds.Height - Me.Height) \ 2
+
+    ' 少し上（例：50ピクセル上）にずらす
+    Dim offsetY As Integer = 50
+
+    ' 位置を設定
+    Me.StartPosition = FormStartPosition.Manual
+    Me.Location = New Point(centerX, Math.Max(0, centerY - offsetY))
+End Sub
+```
+
+
+
+```vbnet
 ' ロック用スタイルの作成（最初に一度だけ）
 If C1FlexGrid1.Styles("Locked") Is Nothing Then
     Dim lockStyle = C1FlexGrid1.Styles.Add("Locked")
